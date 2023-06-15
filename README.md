@@ -16,7 +16,7 @@ class TrackRemover {
         this.elms = [];
         this.interv = null;
     }
-
+    
     getElms() {
         this.elms = Array.from(document.querySelectorAll(`div[aria-label='${this.fav_title}'] div[data-testid='tracklist-row'] button[data-testid='add-button']`));
     }
@@ -24,7 +24,7 @@ class TrackRemover {
     scrollToBottom() {
         window.scrollTo(0,document.body.scrollHeight);
     }
-`
+
     removeTracks() {
         this.scrollToBottom();
         setTimeout(() => {
