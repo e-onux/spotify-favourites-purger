@@ -5,44 +5,52 @@ Actually, you can clean it with Spotify Desktop.([How? Click to learn it.](https
 
 # Usage:
 
- - First of all install [this extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden/related) to touch Spotify via scripts. 
-(It removes Content-Security-Policy headers temporarily from Spotify Web App.
-After cleaning process, you can remove this plugin.)
-
- - Click CSP disable button of this extension.
  - Open your "Favourite Songs" List
  - Press `F12` ( or `CMD+Shift+C` for Mac users) to open DevTools. 
  - Click Console tab paste this code and press `Enter` to see magic:
  - 
  
-    var jq = document.createElement('script');
-    
-    jq.src = "https://code.jquery.com/jquery-latest.min.js";
-    document.getElementsByTagName('head')[0].appendChild(jq);
-    
-    fav_title = $("h1").text();
-    
-    var elms, interv;
-    getElms = function(){ 
-    elms = $("div[aria-label='"+fav_title+"'] div[data-testid='tracklist-row'] button[data-testid='add-button']");
-    };
-    
-    removeTracks = function(){
-        
-        getElms();
-        elms[elms.length-1].scrollIntoView();
-        var i = elms.length;
-        
-        interv = setInterval(function() {
-            var elm = elms[i--];
-            console.log(elm,i);
-            $(elm).trigger("click");
-            if(i < 0 ) {
-                clearInterval(interv);
-                getElms();
-                if(elms.length>0)removeTracks();
-                else console.log("Completed!");
+class TrackRemover {
+    constructor() {
+        this.fav_title = document.querySelector("h1").innerText;
+        this.elms = [];
+        this.interv = null;
+    }
+
+    getElms() {
+        this.elms = Array.from(document.querySelectorAll(`div[aria-label='${this.fav_title}'] div[data-testid='tracklist-row'] button[data-testid='add-button']`));
+    }
+
+    scrollToBottom() {
+        window.scrollTo(0,document.body.scrollHeight);
+    }
+`
+    removeTracks() {
+        this.scrollToBottom();
+        setTimeout(() => {
+            this.getElms();
+            if(this.elms.length > 0) {
+                let i = this.elms.length;
+                this.interv = setInterval(() => {
+                    let elm = this.elms[--i];
+                    console.log(elm, i);
+                    if("click" in elm) elm.click();
+                    if(i <= 0) {
+                        clearInterval(this.interv);
+                        this.getElms();
+                        if(this.elms.length > 0) {
+                            this.removeTracks();
+                        } else {
+                            console.log("Completed!");
+                        }
+                    }
+                }, 400);
             }
-        }, 400);
-    };
-    removeTracks();
+        }, 2000);  // Give the page some time to scroll to the bottom before starting the removal process
+    }
+}
+
+let trackRemover = new TrackRemover();
+trackRemover.removeTracks();
+
+`
