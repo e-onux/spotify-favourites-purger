@@ -10,21 +10,19 @@ Actually, you can clean it with Spotify Desktop.([How? Click to learn it.](https
  - Click Console tab paste this code and press `Enter` to see magic:
  - 
 
+
 class TrackRemover {
     constructor() {
         this.fav_title = document.querySelector("h1").innerText;
         this.elms = [];
         this.interv = null;
     }
-    
     getElms() {
-        this.elms = Array.from(document.querySelectorAll(`div[aria-label='${this.fav_title}'] div[data-testid='tracklist-row'] button[data-testid='add-button']`));
+        this.elms = Array.from(document.querySelectorAll(\`div[aria-label='${this.fav_title}'] div[data-testid='tracklist-row'] button[data-testid='add-button']\`));
     }
-
     scrollToBottom() {
         window.scrollTo(0,document.body.scrollHeight);
     }
-
     removeTracks() {
         this.scrollToBottom();
         setTimeout(() => {
@@ -49,6 +47,6 @@ class TrackRemover {
         }, 2000);  // Give the page some time to scroll to the bottom before starting the removal process
     }
 }
-
 let trackRemover = new TrackRemover();
 trackRemover.removeTracks();
+
