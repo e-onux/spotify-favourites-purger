@@ -9,7 +9,7 @@ Actually, you can clean it with Spotify Desktop.([How? Click to learn it.](https
  - Press `F12` ( or `CMD+Shift+C` for Mac users) to open DevTools. 
  - Click Console tab paste this code and press `Enter` to see magic:
  - 
- 
+
 class TrackRemover {
     constructor() {
         this.fav_title = document.querySelector("h1").innerText;
@@ -52,5 +52,3 @@ class TrackRemover {
 
 let trackRemover = new TrackRemover();
 trackRemover.removeTracks();
-
-`
